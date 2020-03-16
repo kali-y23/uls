@@ -1,5 +1,4 @@
-#ifndef ULS_H
-#define ULS_H
+#pragma once
 
 #include "libmx.h"
 
@@ -18,7 +17,7 @@
 #include <uuid/uuid.h>
 
 // Constants
-#define ALLOWED_FLAGS "ACFGRSTU@acfghilmnoprtux1"
+#define ALLOWED_FLAGS "ACFGRSTU@acfghilmnoprtuwx1"
 #define MODE_FLAGS "Clgonmx1"
 #define SORTING_FLAGS "Stlf"
 #define FILES "f_I_l_E_s"
@@ -43,14 +42,15 @@ typedef struct stat t_st;
 typedef struct s_lists {
     t_list **list;
     t_list *node;
-} t_lists;
+}              t_lists;
 
 typedef enum e_modes {
     columns,
+    x_columns,
     table,
     commas,
     line_break
-} t_mode_enum;
+}            t_mode_enum;
 
 typedef enum e_sorting {
     unsorted,
@@ -60,14 +60,14 @@ typedef enum e_sorting {
     acc_time,
     crt_time,
     names
-} t_sorting_enum;
+}            t_sorting_enum;
 
 typedef enum e_timetype {
     mod,
     chg,
     acc,
     crt
-} t_time_enum;
+}            t_time_enum;
 
 typedef struct s_data {
     char *filename;
@@ -109,7 +109,7 @@ typedef struct s_data {
     long last_changed_nsec;
 
     ino_t inode;
-} t_data;
+}              t_data;
 
 typedef struct s_settings {
     t_mode_enum mode;
@@ -125,7 +125,6 @@ typedef struct s_settings {
     bool reverse; // -r
     bool format_size; // -h
     bool print_xattr; // -@
-    bool print_xcols; // -x
     bool full_time; // -T
     bool omit_group; // -o
     bool colored; // -G
@@ -137,7 +136,8 @@ typedef struct s_settings {
     bool a; // -a
     bool A; // -A
     bool R; // -R
-} t_settings;
+    bool w; // -w
+}              t_settings;
 
 typedef struct s_max_len {
     int filenames;
@@ -147,7 +147,7 @@ typedef struct s_max_len {
     int sizes;
     int xattrs_sizes;
     int inodes;
-} t_max_len;
+}              t_max_len;
 
 typedef struct s_colunms_info {
     t_max_len *max;
@@ -162,30 +162,39 @@ typedef struct s_colunms_info {
 typedef struct s_error {
     char *filename;
     int error;
-} t_error;
+}              t_error;
 
 // Functions
 // Core
 t_settings *mx_setup(char **flags);
 void mx_read_data(t_settings *setup, char **files, char *f);
-void mx_process_l(t_st st, t_data *data, t_settings *settings);
+void mx_read_dir(t_settings *setup, char *dname);
+void mx_process_info(t_st st, t_data *data, t_settings *settings);
 void mx_sort_data_list(t_list **data, t_settings *settings);
 void mx_proccess_output(t_list **list, t_settings *settings);
+void mx_process_files(t_settings *setup, char **files);
+t_data *mx_write_data(t_settings *s, t_st st, char *full_fnm, char *fnm);
+bool mx_check_flags(t_settings *s, t_dnt *dir);
+void mx_check_R(t_list *data, t_settings *s);
+void mx_find_flags(t_settings *settings, char **flags);
+void mx_find_flags_2(t_settings *settings, char flag);
+void mx_find_flags_3(t_settings *settings, char flag);
+void mx_find_sorting_combination_flags(t_sorting_enum *sorting_mode,
+                                       char **flags);
 
 // Errors
 void mx_create_error(t_list **errlist, char *fname);
 void mx_check_usage_error(char **flags, char **files);
 void mx_print_uls_error(t_list *err_list);
-void mx_print_notfound(t_list *err_list);
 void mx_clear_list(t_list **list);
+void mx_clear_err_list(t_list **list);
 
 // Utils
 char **mx_store_flags(int argc, char **argv);
 char **mx_store_files(int argc, char **argv);
-char *mx_check_flags(char **flags);
+char *mx_check_flag(char **flags);
 void mx_print_spaces(int count);
 char mx_get_file_type(mode_t mode);
-bool mx_search_strarr(char **strarr, char *str);
 bool mx_check_chr_or_blk_device(t_list **list);
 char *mx_convert_size(off_t st_size);
 bool mx_has_output_format_flag(char **flags);
@@ -254,6 +263,7 @@ void mx_print_owner_group(t_settings *settings, t_data *data, t_max_len *len);
 void mx_print_tabs(t_settings *settings, t_columns_info *info, t_data *prev);
 void mx_print_columns_colored_spaces(t_settings *settings, t_data *prev,
                                      t_columns_info *info);
+void mx_print_non_printable_str(const char *s);
 
 // Printing modes
 // -l -g -o -n
@@ -266,5 +276,3 @@ void mx_print_x_columns(t_list **list, t_settings *settings);
 void mx_print_force(t_list **list, t_settings *settings);
 // -m
 void mx_print_stream(t_list **list, t_settings *settings);
-
-#endif

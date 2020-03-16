@@ -1,5 +1,4 @@
-#ifndef LIBMX_H
-#define LIBMX_H
+#pragma once
 
 #include <fcntl.h>
 #include <malloc/malloc.h>
@@ -12,7 +11,7 @@
 typedef struct s_list {
     void *data;
     struct s_list *next;
-} t_list;
+}              t_list;
 
 // Utils pack
 void mx_printchar(char c);
@@ -114,5 +113,3 @@ bool mx_is_equal_lists(t_list *a, t_list *b);
 // Set pack
 bool mx_check_set(char **set, char *element, int set_size);
 char **mx_create_set(char **arr);
-
-#endif

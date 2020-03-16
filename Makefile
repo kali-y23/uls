@@ -17,8 +17,11 @@ comparators/mx_name_comparators.c \
 comparators/mx_size_comparators.c \
 comparators/mx_time_asc_comparators.c \
 comparators/mx_time_desc_comparators.c \
+core/mx_find_flags.c \
 core/mx_proccess_output.c \
-core/mx_process_l.c \
+core/mx_process_files.c \
+core/mx_process_flags.c \
+core/mx_process_info.c \
 core/mx_read_data.c \
 core/mx_settings.c \
 core/mx_sort_data_list.c \
@@ -46,6 +49,7 @@ printing/mx_print_filename.c \
 printing/mx_print_force.c \
 printing/mx_print_inode.c \
 printing/mx_print_long.c \
+printing/mx_print_non_printable_str.c \
 printing/mx_print_owner_group.c \
 printing/mx_print_size.c \
 printing/mx_print_spaces.c \
@@ -73,7 +77,6 @@ utils/mx_free_data.c \
 utils/mx_has_acl.c \
 utils/mx_has_output_format_flag.c \
 utils/mx_round_number.c \
-utils/mx_search_strarr.c \
 utils/mx_store_files.c \
 utils/mx_store_flags.c \
 utils/mx_uls_h_get_pow.c \
@@ -84,8 +87,11 @@ mx_name_comparators.o \
 mx_size_comparators.o \
 mx_time_asc_comparators.o \
 mx_time_desc_comparators.o \
+mx_find_flags.o \
 mx_proccess_output.o \
-mx_process_l.o \
+mx_process_files.o \
+mx_process_flags.o \
+mx_process_info.o \
 mx_read_data.o \
 mx_settings.o \
 mx_sort_data_list.o \
@@ -113,6 +119,7 @@ mx_print_filename.o \
 mx_print_force.o \
 mx_print_inode.o \
 mx_print_long.o \
+mx_print_non_printable_str.o \
 mx_print_owner_group.o \
 mx_print_size.o \
 mx_print_spaces.o \
@@ -140,7 +147,6 @@ mx_free_data.o \
 mx_has_acl.o \
 mx_has_output_format_flag.o \
 mx_round_number.o \
-mx_search_strarr.o \
 mx_store_files.o \
 mx_store_flags.o \
 mx_uls_h_get_pow.o \
@@ -152,9 +158,9 @@ CFLAGS = -std=c11 -Wall -Wextra -Werror -Wpedantic
 
 all : install
 
-install : libmx.a uls
+install : libmx/libmx.a uls
 
-libmx.a:
+libmx/libmx.a:
 	@make -C $(LIBMXF)
 
 uls : $(SRC) inc/uls.h libmx/libmx.a

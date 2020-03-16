@@ -2,11 +2,13 @@
 
 ## Synopsys
 
-    ./uls [-ACFGRSTU@acfghilmoprtux1] [file ...]
+    ./uls [-ACFGRSTU@acfghilmoprtuwx1] [file ...]
 
 ## Description
 
-Implementation of the famous Unix command ```ls```, using the C programming 
+Made in collaboration with [smak0v] (https://github.com/smak0v)
+
+Implementation of the famous Unix command ```ls```, using the C programming
 language.
 
 For each operand that names a file of a type other than directory, ```uls```
@@ -62,6 +64,7 @@ lexicographical order.
 |```t```|Sort by time modified (most recently modified first) before sorting  the operands by lexicographical order.|
 |```U```|Use time of file creation, instead of last modification for sorting  (```-t```) or long output (```-l```).|
 |```u```|Use time of last access, instead of last modification of the file for sorting (```-t```) or long printing (```-l```).|
+|```w```|Force raw printing of non-printable characters. This is the default when output is not to a terminal.|
 |```x```|The same as ```-C```, except that the multi-column output is produced with entries sorted across, rather than down, the columns.|
 
 ## License

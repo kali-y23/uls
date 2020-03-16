@@ -1,18 +1,12 @@
 #include "uls.h"
 
-static int count_separated_flags(int argc, char **argv);
-static int count_flags(int separated_flags_count, char **argv);
-static char **store_flags(int separated_flags_count, char **argv);
-
-char **mx_store_flags(int argc, char **argv) {
-    return store_flags(count_separated_flags(argc, argv), argv);
-}
-
 static int count_separated_flags(int argc, char **argv) {
     int separated_flags_count = 0;
 
     for (int i = 1; i < argc; ++i) {
         if (argv[i][0] == '-') {
+            if (mx_strlen(argv[i]) == 1)
+                break;
             if ((argv[i][1] == '-') && (mx_strlen(argv[i]) == 2))
                 break;
             ++separated_flags_count;
@@ -41,4 +35,8 @@ static char **store_flags(int separated_flags_count, char **argv) {
             flags[++k] = mx_strndup(&argv[i][j], 1);
     flags[++k] = NULL;
     return flags;
+}
+
+char **mx_store_flags(int argc, char **argv) {
+    return store_flags(count_separated_flags(argc, argv), argv);
 }

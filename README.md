@@ -6,7 +6,7 @@
 
 ## Description
 
-Made in collaboration with [smak0v] (https://github.com/smak0v)
+Made in collaboration with [smak0v](https://github.com/smak0v)
 
 Implementation of the famous Unix command ```ls```, using the C programming
 language.
